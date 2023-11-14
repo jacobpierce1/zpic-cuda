@@ -498,7 +498,7 @@ void _inject_step_kernel( bnd<unsigned int> range,
                     if ( dir == coord::y ) t = (shifty + cell.y) + (pos.y + 0.5);
 
                     int inj = t > step;
-                    int off = exclusive_scan( block, inj );
+                    int off = exclusive_scan_1( block, inj );
 
                     if ( inj ) {
                         const int k = _np + off;
@@ -821,7 +821,7 @@ void _inject_slab_kernel( bnd<unsigned int> range,
                     if ( dir == coord::y ) t = (shifty + cell.y) + (pos.y + 0.5);
                     
                     int inj = (t >= start) && (t<finish );
-                    int off = exclusive_scan( block, inj );
+                    int off = exclusive_scan_1( block, inj );
                     
                     if (inj) {
                         const int k = _np + off;
@@ -833,7 +833,7 @@ void _inject_slab_kernel( bnd<unsigned int> range,
                     inj = cg::reduce( warp, inj, cg::plus<int>());
                     if ( warp.thread_rank() == 0 ) atomicAdd( &_np, inj );
 
-                    // Not needed because exclusive_scan() causes sync.
+                    // Not needed because exclusive_scan_1() causes sync.
                     // block.sync();
 
                 }
@@ -1150,7 +1150,7 @@ void _inject_sphere_kernel( bnd<unsigned int> range,
                     float gy = ((shifty + cell.y) + (pos.y+0.5)) * dx.y;
                     
                     int inj = (gx - center.x)*(gx - center.x) + (gy - center.y)*(gy - center.y) < r2;
-                    int off = exclusive_scan( block, inj );
+                    int off = exclusive_scan_1( block, inj );
 
                     if ( inj ) {
                         const int k = _np + off;
