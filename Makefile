@@ -4,7 +4,7 @@ LDFLAGS =
 
 # The target GPU architecture must be set to (at least) compute_60
 # to support double precision atomics
-CFLAGS += --gpu-architecture=compute_60
+CFLAGS += --gpu-architecture=compute_80
  
 SOURCE = field.cu vector_field.cu particles.cu \
         emf.cu laser.cu current.cu \
